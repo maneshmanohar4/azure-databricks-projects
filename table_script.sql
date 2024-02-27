@@ -3,12 +3,6 @@ CREATE DATABASE IF NOT EXISTS azure_dataengg_adb.bikestore;
 
 -- COMMAND ----------
 
-CREATE TABLE IF NOT EXISTS azure_dataengg_adb.bikestore.brands(
-brand_id integer,
-brand_name varchar(200));
-
--- COMMAND ----------
-
 CREATE TABLE IF NOT EXISTS azure_dataengg_adb.bikestore.customers (
 customer_id int,
 first_name varchar(150),
@@ -19,13 +13,6 @@ street varchar(150),
 city varchar(150),
 state varchar(150),
 zip_code varchar(150));
-
--- COMMAND ----------
-
-CREATE TABLE IF NOT EXISTS azure_dataengg_adb.bikestore.categories(
-category_id integer,
-category_name varchar(250));
-
 
 -- COMMAND ----------
 
