@@ -49,4 +49,4 @@ WHEN NOT MATCHED THEN
   INSERT ({columnlist})
   VALUES ({insert_stmt})
 """
-print(merge_query)
+spark.sql(merge_query)
