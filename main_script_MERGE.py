@@ -17,6 +17,14 @@ filename=dbutils.widgets.get("filename")
 containername=dbutils.widgets.get("containername")
 storageaccount=dbutils.widgets.get("storageaccount")
 tablename=dbutils.widgets.get("tablename")
+keycol=dbutils.widgets.get("keycol")
+columnlist=dbutils.widgets.get("columnlist")
+catalog="azure_dataengg_adb"
+database="bikestore"
+
+# COMMAND ----------
+
+tablename="customers"
 catalog="azure_dataengg_adb"
 database="bikestore"
 
@@ -27,4 +35,18 @@ data_df.createOrReplaceTempView("TempData")
 
 # COMMAND ----------
 
-spark.sql("INSERT INTO "+catalog+"."+database+"."+tablename+" SELECT * FROM TempData")
+merge_query = f"""
+MERGE INTO {catalog}.{database}.{tablename} AS T
+USING TempData AS S
+ON T.keyColumn = S.keyColumn
+WHEN MATCHED THEN
+  UPDATE SET
+    T.column1 = S.column1,
+    T.column2 = S.column2,
+    ...
+    T.columnN = S.columnN
+WHEN NOT MATCHED THEN
+  INSERT (keyColumn, column1, column2, ..., columnN)
+  VALUES (S.keyColumn, S.column1, S.column2, ..., S.columnN)
+"""
+print(merge_query)
