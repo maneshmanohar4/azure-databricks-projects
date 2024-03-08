@@ -1,8 +1,4 @@
 # Databricks notebook source
-# MAGIC %run ./drop_table_script
-
-# COMMAND ----------
-
 # MAGIC %run ./create_table_script
 
 # COMMAND ----------
