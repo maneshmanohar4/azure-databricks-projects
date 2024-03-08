@@ -20,7 +20,11 @@ database="bikestore"
 
 # COMMAND ----------
 
-data_df=spark.read.format("csv").option("header","true").load("abfss://"+containername+"@"+storageaccount+".dfs.core.windows.net/"+filename)
+try:
+    data_df=spark.read.format("csv").option("header","true").load("abfss://"+containername+"@"+storageaccount+".dfs.core.windows.net/"+filename)
+except:
+    raise Exception("exit")
+
 data_df.createOrReplaceTempView("TempData")
 
 # COMMAND ----------
