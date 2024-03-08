@@ -20,29 +20,33 @@ database="bikestore"
 
 # COMMAND ----------
 
-tablename="customers"
-catalog="azure_dataengg_adb"
-database="bikestore"
+data_df=spark.read.format("csv").option("header","true").load("abfss://"+containername+"@"+storageaccount+".dfs.core.windows.net/"+filename)
+data_df.createOrReplaceTempView("TempData")
 
 # COMMAND ----------
 
-data_df=spark.read.format("csv").option("header","true").load("abfss://"+containername+"@"+storageaccount+".dfs.core.windows.net/"+filename)
-data_df.createOrReplaceTempView("TempData")
+col_arr=columnlist.split(",")
+update_stmt=""
+for up_col in col_arr:
+    update_stmt+="T."+up_col+"=S."+up_col+","
+update_stmt=update_stmt[:-1]
+
+
+insert_stmt=""
+for in_col in col_arr:
+    insert_stmt+="S."+in_col+","
+insert_stmt=insert_stmt[:-1]
 
 # COMMAND ----------
 
 merge_query = f"""
 MERGE INTO {catalog}.{database}.{tablename} AS T
 USING TempData AS S
-ON T.keyColumn = S.keyColumn
+ON T.{keycol} = S.{keycol}
 WHEN MATCHED THEN
-  UPDATE SET
-    T.column1 = S.column1,
-    T.column2 = S.column2,
-    ...
-    T.columnN = S.columnN
+  UPDATE SET {update_stmt}
 WHEN NOT MATCHED THEN
-  INSERT (keyColumn, column1, column2, ..., columnN)
-  VALUES (S.keyColumn, S.column1, S.column2, ..., S.columnN)
+  INSERT ({columnlist})
+  VALUES ({insert_stmt})
 """
 print(merge_query)
