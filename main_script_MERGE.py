@@ -23,7 +23,7 @@ database="bikestore"
 try:
     data_df=spark.read.format("csv").option("header","true").load("abfss://"+containername+"@"+storageaccount+".dfs.core.windows.net/"+filename)
 except:
-    raise Exception("exit")
+    raise Exception("FileNotFound")
 
 data_df.createOrReplaceTempView("TempData")
 
