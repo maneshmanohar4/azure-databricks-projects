@@ -1,9 +1,9 @@
 -- Databricks notebook source
-CREATE DATABASE IF NOT EXISTS azure_dataengg_adb.bikestore;
+CREATE DATABASE IF NOT EXISTS bikestore;
 
 -- COMMAND ----------
 
-CREATE TABLE IF NOT EXISTS azure_dataengg_adb.bikestore.customers (
+CREATE TABLE IF NOT EXISTS bikestore.customers (
 customer_id int,
 first_name varchar(150),
 last_name varchar(150),
@@ -16,7 +16,7 @@ zip_code varchar(150));
 
 -- COMMAND ----------
 
-CREATE TABLE IF NOT EXISTS azure_dataengg_adb.bikestore.orderitems(
+CREATE TABLE IF NOT EXISTS bikestore.orderitems(
 order_id integer,
 item_id integer,
 product_id integer,
@@ -27,7 +27,7 @@ discount varchar(20));
 
 -- COMMAND ----------
 
-CREATE TABLE IF NOT EXISTS azure_dataengg_adb.bikestore.orders(
+CREATE TABLE IF NOT EXISTS bikestore.orders(
 order_id integer,
 customer_id integer,
 order_status integer,
@@ -40,7 +40,7 @@ staff_id integer);
 
 -- COMMAND ----------
 
-CREATE TABLE IF NOT EXISTS azure_dataengg_adb.bikestore.products(
+CREATE TABLE IF NOT EXISTS bikestore.products(
 product_id integer,
 product_name varchar(200),
 brand_id integer,
@@ -50,7 +50,7 @@ list_price varchar(200));
 
 -- COMMAND ----------
 
-CREATE TABLE IF NOT EXISTS azure_dataengg_adb.bikestore.staffs(
+CREATE TABLE IF NOT EXISTS bikestore.staffs(
 staff_id integer,
 first_name varchar(200),
 last_name varchar(200),
@@ -62,7 +62,7 @@ manager_id integer);
 
 -- COMMAND ----------
 
-CREATE TABLE IF NOT EXISTS azure_dataengg_adb.bikestore.stocks(
+CREATE TABLE IF NOT EXISTS bikestore.stocks(
 store_id integer,
 product_id integer,
 quantity integer);
@@ -70,7 +70,7 @@ quantity integer);
 
 -- COMMAND ----------
 
-CREATE TABLE IF NOT EXISTS azure_dataengg_adb.bikestore.stores(
+CREATE TABLE IF NOT EXISTS bikestore.stores(
 store_id integer,
 store_name varchar(200),
 phone varchar(200),

@@ -15,7 +15,6 @@ storageaccount=dbutils.widgets.get("storageaccount")
 tablename=dbutils.widgets.get("tablename")
 keycol=dbutils.widgets.get("keycol")
 columnlist=dbutils.widgets.get("columnlist")
-catalog="azure_dataengg_adb"
 database="bikestore"
 
 # COMMAND ----------
@@ -44,7 +43,7 @@ insert_stmt=insert_stmt[:-1]
 # COMMAND ----------
 
 merge_query = f"""
-MERGE INTO {catalog}.{database}.{tablename} AS T
+MERGE INTO {database}.{tablename} AS T
 USING TempData AS S
 ON T.{keycol} = S.{keycol}
 WHEN MATCHED THEN

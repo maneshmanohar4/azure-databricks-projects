@@ -4,9 +4,9 @@
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC select * from azure_dataengg_adb.bikestore.orderitems where order_id=1
+# MAGIC select * from bikestore.orderitems where order_id=1
 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC select * from azure_dataengg_adb.bikestore.orders
+# MAGIC select * from bikestore.orders

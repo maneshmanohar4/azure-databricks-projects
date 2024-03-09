@@ -23,4 +23,4 @@ data_df.createOrReplaceTempView("TempData")
 
 # COMMAND ----------
 
-spark.sql("INSERT INTO "+catalog+"."+database+"."+tablename+" SELECT * FROM TempData")
+spark.sql("INSERT INTO "+database+"."+tablename+" SELECT * FROM TempData")
