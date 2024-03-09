@@ -16,15 +16,15 @@ tablename=dbutils.widgets.get("tablename")
 keycol=dbutils.widgets.get("keycol")
 columnlist=dbutils.widgets.get("columnlist")
 database="bikestore"
+fileflag=True
 
 # COMMAND ----------
 
 try:
     data_df=spark.read.format("csv").option("header","true").load("abfss://"+containername+"@"+storageaccount+".dfs.core.windows.net/"+filename)
+    data_df.createOrReplaceTempView("TempData")
 except:
-    raise Exception("FileNotFound")
-
-data_df.createOrReplaceTempView("TempData")
+    fileflag=False
 
 # COMMAND ----------
 
@@ -52,4 +52,9 @@ WHEN NOT MATCHED THEN
   INSERT ({columnlist})
   VALUES ({insert_stmt})
 """
-spark.sql(merge_query)
+if fileflag:
+  spark.sql(merge_query)
+
+# COMMAND ----------
+
+dbutils.notebook.exit(fileflag)

@@ -4,9 +4,9 @@
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC select * from bikestore.orderitems where order_id=1
+# MAGIC select * from bikestore.orders
 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC select * from bikestore.orders
+# MAGIC select * from bikestore.orderitems where order_id=1
