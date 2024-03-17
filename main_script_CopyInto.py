@@ -40,21 +40,12 @@ schema="/mnt/test/schema/"
 
 # COMMAND ----------
 
-df = (
-    spark.readStream.format("cloudFiles")
-    .option("cloudFiles.format", "csv") 
-    .option("cloudFiles.schemaLocation",schema) 
-    .load(f"abfss://{containername}@{storageaccount}.dfs.core.windows.net/{foldername}")
-)
-
-(
-df.writeStream.format("delta")
- .option("checkpointLocation","/mnt/test/autoloader/checkpoint")
- .option("mergeSchema", "true")
- .trigger(processingTime='5 seconds')
- .outputMode("append")
- .table(f"{database}.{tablename}")
- )
+# MAGIC %sql
+# MAGIC COPY INTO bikestore.customers
+# MAGIC FROM 'abfss://azuredatastore@dataenggstore.dfs.core.windows.net/autoloader/'
+# MAGIC FILEFORMAT = csv
+# MAGIC FORMAT_OPTIONS ('mergeSchema' = 'true')
+# MAGIC COPY_OPTIONS ('mergeSchema' = 'true');
 
 # COMMAND ----------
 
