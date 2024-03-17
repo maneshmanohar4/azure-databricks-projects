@@ -1,4 +1,8 @@
 # Databricks notebook source
+# MAGIC %run ./drop_table_script
+
+# COMMAND ----------
+
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import expr
 from pyspark.sql.types import StructType
@@ -34,8 +38,7 @@ from pyspark.sql.types import StructType
 # MAGIC street varchar(150),
 # MAGIC city varchar(150),
 # MAGIC state varchar(150),
-# MAGIC zip_code varchar(150),
-# MAGIC time_stamp varchar(150));
+# MAGIC zip_code varchar(150));
 
 # COMMAND ----------
 
@@ -105,11 +108,6 @@ spark.readStream.table(f"{database}.{bronzetablename}").createOrReplaceTempView(
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC select * from customer_bronze_tmp_final
-
-# COMMAND ----------
-
 (spark.table("customer_bronze_tmp_final")
 .writeStream
 .format("delta")
@@ -120,5 +118,27 @@ spark.readStream.table(f"{database}.{bronzetablename}").createOrReplaceTempView(
 
 # COMMAND ----------
 
+spark.readStream.table(f"{database}.{silvertablename}").createOrReplaceTempView("customer_silver_tmp")
+
+# COMMAND ----------
+
 # MAGIC %sql
-# MAGIC select * from bikestore.customers_silver
+# MAGIC CREATE OR REPLACE TEMPORARY VIEW customer_silver_tmp_final AS (
+# MAGIC SELECT *
+# MAGIC FROM customer_silver_tmp)
+
+# COMMAND ----------
+
+(spark.table("customer_silver_tmp_final")
+.writeStream
+.format("delta")
+.option("checkpointLocation","/mnt/test/multihop_gold/checkpoint")
+.option("mergeSchema","true")
+.outputMode("append")
+.table(f"{database}.{goldtablename}"))
+
+# COMMAND ----------
+
+# MAGIC
+# MAGIC %sql
+# MAGIC select * from bikestore.customers_gold

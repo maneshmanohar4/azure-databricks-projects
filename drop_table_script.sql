@@ -16,8 +16,3 @@ DROP TABLE IF EXISTS bikestore.customers_gold;
 
 -- MAGIC %python
 -- MAGIC dbutils.fs.rm("/mnt/test/",True)
-
--- COMMAND ----------
-
--- MAGIC %python
--- MAGIC dbutils.fs.ls("/mnt/test/autoloader/checkpoint/")
