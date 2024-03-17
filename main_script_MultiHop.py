@@ -42,6 +42,11 @@ schema="/mnt/test/schema/"
 
 # COMMAND ----------
 
+# MAGIC %sql 
+# MAGIC select * from customers_raw_temp
+
+# COMMAND ----------
+
 (spark.table("customers_raw_temp")
 .writeStream
 .format("delta")
