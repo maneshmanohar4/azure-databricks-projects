@@ -7,10 +7,15 @@ DROP TABLE IF EXISTS bikestore.staffs;
 DROP TABLE IF EXISTS bikestore.stocks;
 DROP TABLE IF EXISTS bikestore.stores;
 
+DROP TABLE IF EXISTS bikestore.customers_bronze;
+DROP TABLE IF EXISTS bikestore.customers_silver;
+DROP TABLE IF EXISTS bikestore.customers_gold;
+
+
 -- COMMAND ----------
 
 -- MAGIC %python
--- MAGIC dbutils.fs.rm("/mnt/test/autoloader/checkpoint/",True)
+-- MAGIC dbutils.fs.rm("/mnt/test/",True)
 
 -- COMMAND ----------
 
