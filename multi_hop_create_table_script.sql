@@ -25,7 +25,8 @@ email varchar(250),
 street varchar(150),
 city varchar(150),
 state varchar(150),
-zip_code varchar(150));
+zip_code varchar(150),
+time_stamp varchar(150));
 
 -- COMMAND ----------
 
@@ -38,4 +39,6 @@ email varchar(250),
 street varchar(150),
 city varchar(150),
 state varchar(150),
-zip_code varchar(150));
+zip_code varchar(150),
+time_stamp varchar(150),
+phone_status varchar(150));

@@ -3,7 +3,7 @@
 
 # COMMAND ----------
 
-# MAGIC %run ./adls_con_setup
+# MAGIC %run /Workspace/Shared/adls_con_setup
 
 # COMMAND ----------
 

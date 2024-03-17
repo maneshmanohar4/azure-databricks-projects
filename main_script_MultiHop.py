@@ -6,7 +6,6 @@ from pyspark.sql.types import StructType
 # COMMAND ----------
 
 # MAGIC %run ./drop_table_script
-# MAGIC
 
 # COMMAND ----------
 
@@ -14,7 +13,7 @@ from pyspark.sql.types import StructType
 
 # COMMAND ----------
 
-# MAGIC %run ./adls_con_setup
+# MAGIC %run /Workspace/Shared/adls_con_setup
 
 # COMMAND ----------
 
@@ -57,15 +56,25 @@ schema="/mnt/test/schema/"
 
 # COMMAND ----------
 
+# MAGIC %sql 
+# MAGIC select * from bikestore.customers_bronze
+
+# COMMAND ----------
+
 spark.readStream.table(f"{database}.{bronzetablename}").createOrReplaceTempView("customer_bronze_tmp")
 
 # COMMAND ----------
 
 # MAGIC %sql
 # MAGIC CREATE OR REPLACE TEMPORARY VIEW customer_bronze_tmp_final AS(
-# MAGIC   SELECT *
+# MAGIC   SELECT customer_id,first_name,last_name,phone,email,street,city,state,zip_code,cast(current_timestamp() as string) as time_stamp
 # MAGIC   FROM customer_bronze_tmp
 # MAGIC )
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC select * from customer_bronze_tmp_final
 
 # COMMAND ----------
 
@@ -73,9 +82,13 @@ spark.readStream.table(f"{database}.{bronzetablename}").createOrReplaceTempView(
 .writeStream
 .format("delta")
 .option("checkpointLocation","/mnt/test/multihop_silver/checkpoint")
-.option("mergeSchema", "true")
 .outputMode("append")
 .table(f"{database}.{silvertablename}"))
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC select * from bikestore.customers_silver
 
 # COMMAND ----------
 
@@ -85,8 +98,14 @@ spark.readStream.table(f"{database}.{silvertablename}").createOrReplaceTempView(
 
 # MAGIC %sql
 # MAGIC CREATE OR REPLACE TEMPORARY VIEW customer_silver_tmp_final AS (
-# MAGIC SELECT *
+# MAGIC SELECT customer_id,first_name,last_name,phone,email,street,city,state,zip_code,time_stamp
+# MAGIC ,CASE WHEN phone is null THEN 'No Phone Number' ELSE 'Phone Number Available' END as phone_status
 # MAGIC FROM customer_silver_tmp)
+
+# COMMAND ----------
+
+# MAGIC %sql 
+# MAGIC select * from customer_silver_tmp_final
 
 # COMMAND ----------
 
@@ -94,12 +113,10 @@ spark.readStream.table(f"{database}.{silvertablename}").createOrReplaceTempView(
 .writeStream
 .format("delta")
 .option("checkpointLocation","/mnt/test/multihop_gold/checkpoint")
-.option("mergeSchema","true")
 .outputMode("append")
 .table(f"{database}.{goldtablename}"))
 
 # COMMAND ----------
 
-# MAGIC
 # MAGIC %sql
 # MAGIC select * from bikestore.customers_gold
