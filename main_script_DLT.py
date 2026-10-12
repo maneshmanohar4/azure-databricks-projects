@@ -5,10 +5,6 @@ from pyspark.sql.types import StructType
 
 # COMMAND ----------
 
-# MAGIC %run ./adls_con_setup
-
-# COMMAND ----------
-
 # MAGIC %sql
 # MAGIC CREATE OR REFRESH STREAMING LIVE TABLE customers_raw AS
 # MAGIC SELECT * FROM cloud_files("abfss://azuredatastore@dataenggstore.dfs.core.windows.net/autoloader/","csv",map("schema","customer_id STRING,first_name STRING,last_name STRING,phone  STRING,email STRING,street STRING,city STRING,state STRING,zip_code STRING"))
