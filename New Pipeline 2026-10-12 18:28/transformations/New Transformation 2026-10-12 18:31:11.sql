@@ -1,0 +1,2 @@
+CREATE OR REFRESH STREAMING TABLE test_exp_bricks.testdata.credit_card_bronze AS
+SELECT * FROM cloud_files("abfss://synapse@testexpstorageacc.dfs.core.windows.net/testdata/live/", "csv", map("schema", "CreditCardID INT, CardType STRING, CardNumber BIGINT, ExpMonth INT, ExpYear INT, ModifiedDate TIMESTAMP"))
